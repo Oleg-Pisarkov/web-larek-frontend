@@ -30,7 +30,7 @@ export class Item extends Component<IItem>{
     
     
     this.container.addEventListener('click', () => {
-      this.events.emit('item1:click', {element: this});
+      this.events.emit('item:open', { item: this });
     });
 
     //this.container.addEventListener('click', () => {
