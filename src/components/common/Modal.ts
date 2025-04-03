@@ -19,11 +19,13 @@ export class Modal <T>  extends Component<T> {
       } 
     });
 
-    //const addBasketButton = this.container.querySelector('.button');
-    //addBasketButton.addEventListener('click', () => this.events.emit('modal:addBasket'));
-
+    const addBasketButton = this.container.querySelector('.button');
+    addBasketButton.addEventListener('click', () => {
+      this.events.emit('item:add', { item: this });
+    });
+    
     this.handleEscUp = this.handleEscUp.bind(this);
-    //this.modal = this.container.querySelector('.modal__container1');
+   
 }
 
     open() {

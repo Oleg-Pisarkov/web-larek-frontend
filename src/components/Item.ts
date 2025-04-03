@@ -10,18 +10,18 @@ import { IEvents } from "./base/events";
 export class Item extends Component<IItem>{
   protected element: HTMLElement;
   protected events: IEvents;
-  protected itemId: string;
+  protected _id: string;
   protected description: HTMLElement;
   protected image: HTMLImageElement;
   protected title: HTMLElement;
   protected category: HTMLElement;
-  protected price: HTMLSpanElement;
+   price: HTMLSpanElement;
 
   constructor(protected container: HTMLElement, events: IEvents) {
     super(container);
     this.events = events;
     
-
+    
     this.description = this.container.querySelector('.card__text');
     this.image = this.container.querySelector('.card__image');
     this.title = this.container.querySelector('.card__title');
@@ -33,39 +33,27 @@ export class Item extends Component<IItem>{
       this.events.emit('item:open', { item: this });
     });
 
-    //this.container.addEventListener('click', () => {
-     // this.events.emit('item:click', {element: this});
-   // });
-
+    
   
 }
 
-  set _id(id: string) {
-    this.itemId = id;
+  set _idd(id: string) {
+    this._id = id;
   }
 
-  get _id() {
-    return this.itemId
+  get _idd() {
+    return this._id
   }
   
   render(data?: Partial<IItem>): HTMLElement 
   render(itemData: Partial<IItem>, id: string): HTMLElement 
     
   render(itemData: Partial<IItem> | undefined) {
-  /*
-  this.itemId = itemData.id;
-  this.title.textContent = itemData.title;
-  this.category.textContent = itemData.category;
-  this.price.textContent = itemData?.price?.toString() ?? 'Бесценно';
-  if (this.image) {
-    this.image.src = itemData.image ?? '';
-  }
-*/
-
+ 
 
     if (!itemData) return this.container;
     if (itemData){
-      this.itemId = itemData.id;
+      this._id = itemData.id;
       this.title.textContent = itemData.title;
       this.category.textContent = itemData.category;
       this.price.textContent = itemData?.price?.toString() ?? 'Бесценно';
@@ -77,16 +65,5 @@ export class Item extends Component<IItem>{
 
   
 
-  /*
-  render(itemData: Partial<IItem> ){
-    this.itemId = itemData.id;
-    this.title.textContent = itemData.title;
-    //this.description.textContent = itemData.description;
-    this.category.textContent = itemData.category;
-    this.price.textContent = itemData.price.toString();
-    return this.element
-    
-  }
-    */
 }
 }

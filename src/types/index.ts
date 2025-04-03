@@ -90,7 +90,10 @@ export interface IOrderResult {
 
 
 
-
+export interface IOrderResult {
+  id: string;
+  price: number;
+}
 
 
 export interface IItem {
@@ -102,12 +105,9 @@ export interface IItem {
   price: number;
 }
 
-export interface IOrderForm  {
-  payment: string;
-  address: string;
+export interface IContactForm  {
   email: string;
   phone: string;
-  total?: string | number;
 }
 
 export interface IItemData {
@@ -131,7 +131,7 @@ export interface IAppState {
   render(items: IItem[]): void;
 }
 
-export interface IOrder extends IOrderForm {
+export interface IOrder extends IContactForm {
   items: string[];
 }
 
@@ -144,3 +144,27 @@ export interface IApi {
   get<T>(uri: string): Promise<T>;
   post<T>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
+
+export type FormProps = {
+valid: boolean;
+errors: string[];
+
+}
+
+export type OrderForm = {
+  paymentType: string;
+  address: string;
+  
+}
+
+export type BasketItemProps = {
+  title: string;
+  price: number | null;
+  index: number | string;
+}
+
+
+export type BasketItemViewProps = {
+  id: string;
+}& BasketItemProps
+  
