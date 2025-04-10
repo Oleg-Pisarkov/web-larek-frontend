@@ -1,7 +1,7 @@
 
-import { createElement, ensureElement } from "../../utils/utils";
-import { IEvents } from "../base/events";
-import { Modal } from "../common/Modal";
+import { createElement, ensureElement } from "../../../utils/utils";
+import { IEvents } from "../../base/events";
+import { Modal } from "../../common/Modal";
 
 
 export interface IBasketModal {

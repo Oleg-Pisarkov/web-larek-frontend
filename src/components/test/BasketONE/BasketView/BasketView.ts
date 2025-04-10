@@ -1,7 +1,7 @@
 
 import { IEvents } from "../base/events";
 import { cloneTemplate } from "../../utils/utils";
-import { BasketModal  } from "../Basket/BasketModal"
+import { BasketModal  } from "../BasketONE/BasketModal"
 
 export class BasketView extends BasketModal {
 	constructor(protected events: IEvents) {

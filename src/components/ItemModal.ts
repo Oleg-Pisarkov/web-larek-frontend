@@ -39,20 +39,23 @@ export class ItemModal extends Modal<IItemModal> {
     this.price = this.content.querySelector('.card__price');
     this.closeButtonElement = this.container.querySelector('.modal__close');
     this.basketButton = this.content.querySelector('.button');
-    
+   
 
-
- 
 }
 
 set modalItem({ id, description, image, title, category, price }: {id: string, description: string, image: string, title: string, category: string, price: number }) {
+  this.basketButton.addEventListener('click', () => {
+    this.events.emit('item:add', {  id, description, image, title, category, price } );
+  });
+
+  
   this.content.querySelector('.card__text').textContent = description;
   this.content.querySelector('.card__title').textContent = title;
   this.content.querySelector('.card__category').textContent = category;
   //this.content.querySelector('.card__price').textContent = price.toString();
   this.content.querySelector('.card__image').setAttribute('src', `${CDN_URL}${image}`);
    if (price) { 
-    this.content.querySelector('.card__price').textContent = price.toString();
+    this.content.querySelector('.card__price').textContent = price.toString() + ' синапсов';
   }
   else {
     this.content.querySelector('.card__price').textContent = 'Бесценно';

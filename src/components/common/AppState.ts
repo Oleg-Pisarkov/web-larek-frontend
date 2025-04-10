@@ -10,9 +10,9 @@ export class AppState {
   private _catalogItems: IItem[] = [];
   private _orderForm: OrderForm ={address: '', paymentType: ''};
   private _contactForm: IContactForm = {email: '', phone: ''};
-
+ 
   constructor(private events: IEvents) {
-
+   
   }
 
   set catalogItems(items: IItem[]) {
@@ -47,19 +47,22 @@ export class AppState {
   getCatalogItemById(id: string): IItem | undefined {
     return this._catalogItems.find((item) => item.id === id);
   }
-
+/*
   addBasketItem(catalogItem: IItem): void {
     if(this.basketItems.some((item) => item.id === catalogItem.id)) return;
     this._basketItems.push(catalogItem);
-    this.events.emit('basketItems:add');
+    this.events.emit('basketItems:add', ({item: catalogItem}));
   }
-  
+  */
+  addBasketItem(item: IItem): void {
+    this._basketItems.push(item);
+    this.events.emit('basketItems:add', ({item}));
+  }
+
+
   removeBasketItem(id: string): void {
-    const itemIndex = this._basketItems.findIndex((item) => item.id === id);
-    if(itemIndex !== 1){
-      this._basketItems.splice(itemIndex, 1);
-    }
-    this.events.emit('basketItems:remove');
+    this._basketItems = this._basketItems.filter((item) => item.id !== id);
+    this.events.emit('basketItems:delete', {id});
   }
 
   clearBasket(): void {

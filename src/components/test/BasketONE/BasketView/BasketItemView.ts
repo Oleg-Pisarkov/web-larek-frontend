@@ -2,11 +2,11 @@
 import { BasketItemViewProps } from "../../types/index";
 import { cloneTemplate } from "../../utils/utils";
 import { IEvents } from "../base/events";
-import { BasketItem } from "../Basket/BasketItem";
+import { BasketItem } from "../BasketONE/BasketItem";
 
 export class BasketItemView extends  BasketItem<BasketItemViewProps> {
-  constructor( events: IEvents) {
-    super(cloneTemplate<HTMLElement>('#card-basket'), events);
+  constructor( protected container: HTMLElement, events: IEvents) {
+    super(container, events);
     events.emit('basketItems:delete', {id: this.id});
     
   }

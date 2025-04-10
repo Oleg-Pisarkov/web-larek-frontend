@@ -15,7 +15,7 @@ export class Item extends Component<IItem>{
   protected image: HTMLImageElement;
   protected title: HTMLElement;
   protected category: HTMLElement;
-   price: HTMLSpanElement;
+  protected price: HTMLSpanElement;
 
   constructor(protected container: HTMLElement, events: IEvents) {
     super(container);
@@ -31,6 +31,7 @@ export class Item extends Component<IItem>{
     
     this.container.addEventListener('click', () => {
       this.events.emit('item:open', { item: this });
+      
     });
 
     
@@ -56,7 +57,8 @@ export class Item extends Component<IItem>{
       this._id = itemData.id;
       this.title.textContent = itemData.title;
       this.category.textContent = itemData.category;
-      this.price.textContent = itemData?.price?.toString() ?? 'Бесценно';
+      //this.price.textContent = itemData?.price?.toString() ?? 'Бесценно';
+      this.price.textContent = itemData?.price?.toString() ? `${itemData.price}  синапсов` : 'Бесценно';
       this.image.src = `${CDN_URL}${itemData.image}`;
 
      return super.render(itemData);

@@ -103,6 +103,7 @@ export interface IItem {
   title: string;
   category: string;
   price: number;
+  selected: boolean;
 }
 
 export interface IContactForm  {
