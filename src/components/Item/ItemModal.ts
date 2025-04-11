@@ -1,7 +1,7 @@
-import { IItem } from '../types';
-import { CDN_URL } from '../utils/constants';
-import { IEvents } from './base/events';
-import { Modal } from './common/Modal';
+import { IItem } from '../../types';
+import { CDN_URL } from '../../utils/constants';
+import { IEvents } from '../base/events';
+import { Modal } from '../common/Modal';
 
 export interface IItemModal {
   
@@ -11,8 +11,7 @@ export interface IItemModal {
     description: string;
     category: string;
     price: number;
-  
-  
+    
 }
 
 
@@ -39,15 +38,13 @@ export class ItemModal extends Modal<IItemModal> {
     this.price = this.content.querySelector('.card__price');
     this.closeButtonElement = this.container.querySelector('.modal__close');
     this.basketButton = this.content.querySelector('.button');
-   
-
+    this.basketButton.addEventListener('click', () => {
+      this.events.emit('item:add', { id: this._id, description: this.description, image: this.image, title: this.title, category: this.category, price: this.price } );
+    });
 }
 
 set modalItem({ id, description, image, title, category, price }: {id: string, description: string, image: string, title: string, category: string, price: number }) {
-  this.basketButton.addEventListener('click', () => {
-    this.events.emit('item:add', {  id, description, image, title, category, price } );
-  });
-
+ 
   
   this.content.querySelector('.card__text').textContent = description;
   this.content.querySelector('.card__title').textContent = title;

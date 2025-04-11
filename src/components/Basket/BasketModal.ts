@@ -23,7 +23,7 @@ export interface IBasketModal {
       this._total = ensureElement<HTMLSpanElement>('.basket__price', this.container);
       this.basketButtonBuy = ensureElement<HTMLButtonElement>('.button_basket', this.container)
       this.basketButtonBuy.addEventListener('click', () => {
-        this.events.emit('order:open', { list: this});
+        this.events.emit('order:open', { });
       });
       
  }

@@ -4,7 +4,7 @@ import { Modal } from "../common/Modal";
 import { IEvents } from "../base/events";
 import {  ensureElement } from "../../utils/utils";
 import { Component } from "../base/Component";
-//import { BaskerItemActions } from "../types/index";
+
 
 interface IBasketActions {
   onClick: (event: MouseEvent) => void

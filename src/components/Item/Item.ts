@@ -1,15 +1,17 @@
-import { IItem } from "../types";
-import { CDN_URL } from "../utils/constants";
-import { cloneTemplate } from "../utils/utils";
-import { Component } from "./base/Component";
-import { IEvents } from "./base/events";
+import { IItem } from "../../types/index";
+import { CDN_URL } from "../../utils/constants";
+import { cloneTemplate } from "../../utils/utils";
+import { Component } from "../base/Component";
+import { IEvents } from "../base/events";
 
-
+export interface IItemActions {
+  onClick: (event: MouseEvent) => void
+}
 
 
 export class Item extends Component<IItem>{
   protected element: HTMLElement;
-  protected events: IEvents;
+  //protected events: IEvents;
   protected _id: string;
   protected description: HTMLElement;
   protected image: HTMLImageElement;
@@ -17,9 +19,9 @@ export class Item extends Component<IItem>{
   protected category: HTMLElement;
   protected price: HTMLSpanElement;
 
-  constructor(protected container: HTMLElement, events: IEvents) {
+  constructor(protected container: HTMLElement, actions: IItemActions ) {
     super(container);
-    this.events = events;
+    
     
     
     this.description = this.container.querySelector('.card__text');
@@ -29,9 +31,9 @@ export class Item extends Component<IItem>{
     this.price = this.container.querySelector('.card__price');
     
     
-    this.container.addEventListener('click', () => {
-      this.events.emit('item:open', { item: this });
-      
+    this.container.addEventListener('click', (evt) => {
+      //this.events.emit('item:open', { item: this });
+      actions.onClick(evt);
     });
 
     
@@ -63,9 +65,7 @@ export class Item extends Component<IItem>{
 
      return super.render(itemData);
     }
-  
-
-  
-
 }
 }
+
+//в итеме поменять events yf onclick

@@ -6,21 +6,19 @@ import { IApi, IItem, IOrderResult } from './types';
 import { Api } from './components/base/api';
 import { API_URL, settings } from './utils/constants';
 import { AppApi } from './components/AppApi';
-import { Item } from './components/Item';
-import { ItemContainer } from './components/ItemContainer';
+import { Item } from './components/Item/Item';
+import { ItemContainer } from './components/Item/ItemContainer';
 import { cloneTemplate } from './utils/utils';
-import { ItemModal } from './components/ItemModal';
+import { ItemModal } from './components/Item/ItemModal';
 import { AppState } from './components/common/AppState';
-//import { Basket, BasketContainer } from './components/newBasket/Basket';
-//import { Modal } from './components/common/Modal';
+import {  BasketModal } from './components/Basket/BasketModal';
+import { BasketItem } from './components/Basket/BasketItem';
+import { Order } from './components/Order/Order';
+import { Contacts } from './components/Order/Contacts';
+
 
 
 const events = new EventEmitter();
-
-
-
-
-
 
 const baseApi: IApi = new Api(API_URL, settings);
 const api = new AppApi(baseApi)
@@ -29,11 +27,19 @@ const itemTemplate: HTMLTemplateElement = document.querySelector('#card-catalog'
 
 const itemContainer = new ItemContainer(document.querySelector('.gallery'));
 const viewModal = new ItemModal(document.querySelector('.modal_full'), events);
+const itemPreviewTemplate: HTMLTemplateElement = document.querySelector('#card-preview');
 
- 
+const basket = new BasketModal(document.querySelector('.modal_basket'), events);
+const basketTemplate: HTMLTemplateElement = document.querySelector('#card-basket')
+const basketCounter = ensureElement<HTMLSpanElement>('.header__basket-counter');
+const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
 
 
- 
+basketButton.addEventListener('click', () => {
+  events.emit('basket:open')
+  //basket.open()
+});
+
 events.onAll((event) => {
   console.log(event.eventName, event.data)
 }) 
@@ -52,7 +58,7 @@ Promise.all([api.getItems()]).then(([items]) => {
 
 events.on('items:loded', () => {
   const itemArray = appState.catalogItems.map((item) => {
-    const itemInsnant = new Item(cloneTemplate(itemTemplate), events);
+    const itemInsnant = new Item(cloneTemplate(itemTemplate), { onClick: () => events.emit('item:open', item) });
    
    return itemInsnant.render(item);
   });
@@ -61,20 +67,18 @@ events.on('items:loded', () => {
 })
 
 
-  events.on('item:open', (data: { item: IItem }) => {
-    const { item } = data;
+  events.on('item:open', (item: IItem ) => {
+    const itemPreview = new Item(cloneTemplate(itemPreviewTemplate), { onClick: () => events.emit('item:add', item) });
+    //const { item } = data;
     const modalData = appState.getCatalogItemById(item.id);
     viewModal.render(modalData);
     viewModal.modalItem = modalData;
     viewModal.open();
-    //viewModal.ItemId = item.id
-  })
-
-
+    viewModal.ItemId = item.id
+});
 
  
- /*
-events.on('item:add', (data: { item: Item }) => {
+ 
  
  /* 
  otpravka na server
@@ -99,159 +103,6 @@ events.on('item:add', (data: { item: Item }) => {
 
 
 
-
-
-
-
-
-
-
-
-
-/*
-
-BASKET
-
-
-
-
-import { BasketModal } from './components/Basket/BasketModal';
-import { BasketItem } from './components/Basket/BasketItem';
-import { BasketItemView } from './components/BasketView/BasketItemView';
-import { BasketView } from './components/BasketView/BasketView';
-const basketTemplate: HTMLTemplateElement = document.querySelector('#card-basket')
-const basketContainer = new BasketModal(document.querySelector('.modal_basket'), events);
-
-const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
-const basketCounter = ensureElement<HTMLSpanElement>(
-	'.header__basket-counter',
-	basketButton
-);
-
-
-
-const basketButtom = document.querySelector('.header__basket');
-basketButtom.addEventListener('click', () => {
-  basketContainer.open();
-  events.emit('basket:open')
-});
-
-
-
-
-events.on('item:add', (data: { item: IItem }) => {
- appState.addBasketItem(data.item);
- basketCounter.textContent = `${appState.basketItems.length}`;
- viewModal.close();
-})
-
-events.on('basketItems:add', () => {
-  basketCounter.textContent = `${appState.basketItems.length}`;
-basketContainer.render({
-  total: appState.basketTotal,
-  items: appState.basketItems.map((item, index) => new BasketItemView( cloneTemplate(basketTemplate), events).render({...item, index: index + 1}))
-  
-
-})
-const basketItems = appState.basketItems.map((item) => {
- 
-  
-})
-  
-})
-*/
-/*
-
-//NEW BASKET
-const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
-const basketCounter = ensureElement<HTMLSpanElement>(
-	'.header__basket-counter',
-	basketButton
-);
-
-basketButton.addEventListener('click', () => {
-  events.emit('basket:open')
-});
-
-//const modalBasket = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
-const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
-const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
-
-const basket = new Basket('basket', cloneTemplate(basketTemplate), events);
-
-events.on('item:add', ( item: IItem ) => {
-appState.addBasketItem(item);
-basketCounter.textContent = `${appState.basketItems.length}`;
-viewModal.close();
-})
-
-events.on('basket:open', () => {
- 
- });
-
- 
- */
-
- //BASKET V2
-
- /*
-const basketItemTemplate: HTMLTemplateElement = document.querySelector('#card-basket')
-const basketContainer = new Basket(document.querySelector('.modal_basket'), events);
-const viewBasket = new BasketContainer(document.querySelector('.basket'), events);
-
-const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
-const basketCounter = ensureElement<HTMLSpanElement>(
-	'.header__basket-counter',
-	basketButton
-);
-
-basketButton.addEventListener('click', () => {
-  events.emit('basket:open')
-});
-
-events.on('item:add', ( item: IItem ) => {
-  appState.addBasketItem(item);
-  basketCounter.textContent = `${appState.basketItems.length}`;
-  viewModal.close();
-  const basketArray = appState.basketItems.map((item) => {
-    const basketInsnant = new BasketContainer(cloneTemplate(basketItemTemplate), events);
-    return basketInsnant.render(item);
-  })
-basketContainer.render({
-  list: basketArray,
-  price: appState.basketTotal,
-  
-})
-  })
-
-
-events.on('basket:open', () => {
-  
-
-})
-*/
-
-import {  BasketModal } from './components/BasketverSSS/BasketModal';
-import { BasketItem } from './components/BasketverSSS/BasketItem';
-
-const basket = new BasketModal(document.querySelector('.modal_basket'), events);
-//const basketItem = new BasketItem(document.querySelector('basket__item'), events)
-const basketTemplate: HTMLTemplateElement = document.querySelector('#card-basket')
-/*
-const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
-const basketCounter = ensureElement<HTMLSpanElement>(
-	'.header__basket-counter',
-	basketButton
-);
-
-basketButton.addEventListener('click', () => {
-  events.emit('basket:open')
-  //basket.open()
-});
-*/
-
-const basketCounter = ensureElement<HTMLSpanElement>('.header__basket-counter');
-
 events.on('item:add', ( item: IItem ) => {
   appState.addBasketItem(item);
   
@@ -259,51 +110,6 @@ events.on('item:add', ( item: IItem ) => {
   viewModal.close();
 })
 
-/*
-events.on('basket:open', (item: {item: IItem}) => {
-  
-  const basketArray = appState.basketItems.map((item) => {
-    console.log(item.title)
-    const basketInsnant = new BasketItem(cloneTemplate(basketTemplate), events);
-    basketInsnant.index = `${appState.basketItems.indexOf(item) + 1}`;
-    //basketInsnant.price = item.price.toString();
-   // basketInsnant.title = item.title;
-    console.log(item)
-    return basketInsnant.render(item);
-  })
-  basket.render({
-    items: basketArray,
-    total: appState.basketTotal,
-    
-  })
-  basket.open()
-  //console.log(basketArray)
-})
-
-
-
-
-
-
-
-/*
- events.on('item:open', (data: { item: IItem }) => {
-    const { item } = data;
-    const modalData = appState.getCatalogItemById(item.id);
-    viewModal.render(modalData);
-    viewModal.modalItem = modalData;
-    viewModal.open();
-    //viewModal.ItemId = item.id
-  })
-*/
-
-const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
-
-
-basketButton.addEventListener('click', () => {
-  events.emit('basket:open')
-  //basket.open()
-});
 
 events.on('basket:open', () => {
  const basketItem = appState.basketItems.map((item, index) => {
@@ -323,9 +129,6 @@ events.on('basket:open', () => {
 })
 
   
-
-//'basket:remove'
-
 events.on('basket:remove', (item: IItem) => {
   appState.removeBasketItem(item.id);
   basketCounter.textContent = `${appState.basketItems.length}`;
@@ -333,3 +136,21 @@ events.on('basket:remove', (item: IItem) => {
   basket.total = appState.basketTotal
 
 })
+
+
+
+const orderTemplate: HTMLTemplateElement = document.querySelector('#order');
+
+const contactsTemplate: HTMLTemplateElement = document.querySelector('#contacts');
+const successTemplate: HTMLTemplateElement = document.querySelector('#success');
+
+const order = new Order(document.querySelector('.order-modal'), events);
+const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
+
+events.on('order:open', () => {
+  order.render({
+    address: ''
+  });
+  order.open();
+  basket.close();
+})  
