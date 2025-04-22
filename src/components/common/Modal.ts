@@ -5,7 +5,7 @@ import { IEvents } from "../base/events";
 
 
 export class Modal <T>  extends Component<T> {
-  protected modal: HTMLElement;
+  protected _modal: HTMLElement;
   protected events: IEvents;
   protected _closeButton: HTMLButtonElement;
 
@@ -16,7 +16,7 @@ export class Modal <T>  extends Component<T> {
     
     this._closeButton = this.container.querySelector('.modal__close');
     this._closeButton.addEventListener('click', this.close.bind(this));
-
+   // this._modal = ensureElement<HTMLElement>('.modal__content', container);
 
 
     
@@ -31,7 +31,11 @@ export class Modal <T>  extends Component<T> {
     this.handleEscUp = this.handleEscUp.bind(this);
    
 }
-
+/*
+set modal(value: HTMLElement) {
+  this._modal.replaceChildren(value);
+}
+*/
     open() {
       this.container.classList.add('modal_active');
       document.addEventListener('keyup', this.handleEscUp);
@@ -40,6 +44,7 @@ export class Modal <T>  extends Component<T> {
     close() {
       this.container.classList.remove('modal_active');
       document.removeEventListener('keyup', this.handleEscUp);
+      //this.modal = null;
     }     
     
     handleEscUp(event: KeyboardEvent) {

@@ -56,6 +56,7 @@ set modalItem({ id, description, image, title, category, price }: {id: string, d
   }
   else {
     this.content.querySelector('.card__price').textContent = 'Бесценно';
+    this.basketButton.setAttribute('disabled', 'true');
   }
   //this .id = id
   

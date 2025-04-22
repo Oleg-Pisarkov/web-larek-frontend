@@ -103,8 +103,8 @@
 						<div class="order__field">
 							<h2 class="modal__title">Способ оплаты</h2>
 							<div class="order__buttons">
-								<button type="button" class="card button button_alt">Онлайн</button>
-								<button type="button" class="cash button button_alt">При получении</button>
+								<button type="button" class="cardBtn button button_alt">Онлайн</button>
+								<button type="button" class="cashBtn button button_alt">При получении</button>
 							</div>
 						</div>
 						<label class="order__field">
@@ -113,7 +113,8 @@
 						</label>
 					</div>
 					<div class="modal__actions">
-						<button disabled class="button">Далее</button>
+						<button disabled class="button submit__Button">Далее</button>
+						<span class="form__errors"></span>
 					</div>
 				</form>
 			</div>
@@ -128,15 +129,16 @@
 					<div class="order">
 						<label class="order__field">
 							<span class="form__label modal__title">Email</span>
-							<input class="form__input" type="text" placeholder="Введите Email" />
+							<input class="form__input email" type="text" placeholder="Введите Email" />
 						</label>
 						<label class="order__field">
 							<span class="form__label modal__title">Телефон</span>
-							<input class="form__input" type="text" placeholder="+7 (" />
+							<input class="form__input phone" type="text" placeholder="+7 (" />
 						</label>
 					</div>
 					<div class="modal__actions">
-						<button disabled class="button">Оплатить</button>
+						<button disabled class="button submit__Button">Оплатить</button>
+						<span class="form__errors"></span>
 					</div>
 				</form>
 			</div>
@@ -214,8 +216,8 @@
 				<div class="order__field">
 					<h2 class="modal__title">Способ оплаты</h2>
 					<div class="order__buttons">
-						<button name="card" type="button" class="button button_alt">Онлайн</button>
-						<button name="cash" type="button" class="button button_alt">При получении</button>
+						<button name="card" type="button" class="card button button_alt">Онлайн</button>
+						<button name="cash" type="button" class="cash button button_alt">При получении</button>
 					</div>
 				</div>
 				<label class="order__field">

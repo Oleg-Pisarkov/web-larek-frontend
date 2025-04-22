@@ -5,7 +5,7 @@ import { Modal } from "../common/Modal";
 
 
 export interface IBasketModal {
-  items: HTMLElement[];
+  list: HTMLElement[];
   total: number;
 
  }

@@ -43,7 +43,7 @@ export class BasketItem extends Component< IItemBasket > {
   }
 
   set price (price: string) {
-   // this._price.textContent = price ?? 'Бесценно';
+   
    if (price) {
     this.container.querySelector('.card__price').textContent = price + ' синапсов';
    }

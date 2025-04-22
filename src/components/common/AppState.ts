@@ -3,6 +3,7 @@ import { IContactForm } from "../../types";
 import { FormProps } from "../../types";
 import { IEvents } from "../base/events";
 import { OrderForm } from "../../types";
+import { IForm } from "./Form";
 
 
 export class AppState {
@@ -28,6 +29,9 @@ export class AppState {
     this._orderForm = form;
 }
 
+get orderForm(): OrderForm {
+    return this._orderForm;
+}
   set contactForm(form: IContactForm) {
     this._contactForm = form;
 }
@@ -41,6 +45,7 @@ export class AppState {
   }
 
   get basketTotal(): number {
+   
     return this._basketItems.reduce((acc, item) => acc + item.price, 0);
   }
 
@@ -75,7 +80,7 @@ export class AppState {
     this._contactForm = {email: '', phone: ''};
   }
 
-  validateOrderForm(): FormProps {
+  validateOrderForm(): IForm {
     const errors: string[] = [];
     let valid = true;
 
@@ -85,7 +90,7 @@ export class AppState {
     }
 
     if (!this.orderForm.paymentType.length) {
-      errors.push('Выберите способ оплаты');
+      errors.push(' Выберите способ оплаты');
       valid = false;
     }
 

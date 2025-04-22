@@ -59,7 +59,6 @@ export class Item extends Component<IItem>{
       this._id = itemData.id;
       this.title.textContent = itemData.title;
       this.category.textContent = itemData.category;
-      //this.price.textContent = itemData?.price?.toString() ?? 'Бесценно';
       this.price.textContent = itemData?.price?.toString() ? `${itemData.price}  синапсов` : 'Бесценно';
       this.image.src = `${CDN_URL}${itemData.image}`;
 

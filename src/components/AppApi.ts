@@ -1,4 +1,4 @@
-import { IApi, IItem, IOrderResult } from "../types";
+import { IApi, IItem, IOrder, IOrderResult } from "../types";
 import { IItemData } from "../types";
 import { ApiListResponse } from './base/api';
 
@@ -20,6 +20,10 @@ getItems():Promise<IItem[]>{
     return items.items.map((item) => ({ ...item}));
   })
    
+}
+
+buyItems(items: IOrder): Promise<IOrderResult> {
+  return this._baseApi.post<IOrderResult>('/order', items).then((item: IOrderResult) => item);
 }
 
 /*

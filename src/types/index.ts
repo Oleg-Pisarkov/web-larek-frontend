@@ -102,7 +102,7 @@ export interface IItem {
   image: string;
   title: string;
   category: string;
-  price: number;
+  price: number | null;
   selected: boolean;
 }
 
@@ -132,7 +132,12 @@ export interface IAppState {
   render(items: IItem[]): void;
 }
 
-export interface IOrder extends IContactForm {
+export interface IOrder  {
+  payment: string;
+  address: string;
+  phone: string;
+  email: string;
+  total: number;
   items: string[];
 }
 
