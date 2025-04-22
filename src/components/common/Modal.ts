@@ -1,55 +1,40 @@
-import { ensureElement } from "../../utils/utils";
-import { Component } from "../base/Component";
-import { IEvents } from "../base/events";
+import { Component } from '../base/Component';
+import { IEvents } from '../base/events';
 
+export class Modal<T> extends Component<T> {
+	protected events: IEvents;
+	protected _closeButton: HTMLButtonElement;
 
+	constructor(container: HTMLElement, events: IEvents) {
+		super(container);
 
-export class Modal <T>  extends Component<T> {
-  protected _modal: HTMLElement;
-  protected events: IEvents;
-  protected _closeButton: HTMLButtonElement;
+		this.events = events;
 
-  constructor(container: HTMLElement, events: IEvents) {
-    super(container);
+		this._closeButton = this.container.querySelector('.modal__close');
+		this._closeButton.addEventListener('click', this.close.bind(this));
 
-    this.events = events;
-    
-    this._closeButton = this.container.querySelector('.modal__close');
-    this._closeButton.addEventListener('click', this.close.bind(this));
-   // this._modal = ensureElement<HTMLElement>('.modal__content', container);
+		this.container.addEventListener('mousedown', (evt) => {
+			if (evt.target === evt.currentTarget) {
+				this.close();
+			}
+		});
 
+		this.handleEscUp = this.handleEscUp.bind(this);
+	}
 
-    
-    this.container.addEventListener('mousedown', (evt)=> {
-      if (evt.target === evt.currentTarget) {
-        this.close();
-      } 
-    });
+	open() {
+		this.container.classList.add('modal_active');
+		document.addEventListener('keyup', this.handleEscUp);
+	}
 
-   
-    
-    this.handleEscUp = this.handleEscUp.bind(this);
-   
+	close() {
+		this.container.classList.remove('modal_active');
+		document.removeEventListener('keyup', this.handleEscUp);
+	}
+
+	handleEscUp(event: KeyboardEvent) {
+		if (event.key === 'Escape') {
+			this.close();
+		}
+	}
 }
-/*
-set modal(value: HTMLElement) {
-  this._modal.replaceChildren(value);
-}
-*/
-    open() {
-      this.container.classList.add('modal_active');
-      document.addEventListener('keyup', this.handleEscUp);
-}
-
-    close() {
-      this.container.classList.remove('modal_active');
-      document.removeEventListener('keyup', this.handleEscUp);
-      //this.modal = null;
-    }     
-    
-    handleEscUp(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        this.close();
-      }
-    }
-} 

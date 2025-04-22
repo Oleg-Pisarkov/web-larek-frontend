@@ -1,20 +1,16 @@
-import { Component } from "../base/Component";
+import { IItemContainer } from '../../types';
+import { Component } from '../base/Component';
 
-interface IItemContainer {
-catalog: HTMLElement[];
-}
+
 
 export class ItemContainer extends Component<IItemContainer> {
-  protected _catalog: HTMLElement;
-  
+	protected _catalog: HTMLElement;
 
-  constructor(container: HTMLElement) {
-    super(container);
-  }
+	constructor(container: HTMLElement) {
+		super(container);
+	}
 
-  set catalog (items: HTMLElement[]) {
-    this.container.replaceChildren(...items);
-  }
-
-  
+	set catalog(items: HTMLElement[]) {
+		this.container.replaceChildren(...items);
+	}
 }
