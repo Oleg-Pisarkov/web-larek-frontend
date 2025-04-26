@@ -151,6 +151,14 @@ events.on('contacts:submit', () => {
 	};
 	api.buyItems(order).then((res) => {
 		events.emit('order:success', res);
+		appState.clearBasket();
+		appState.resetForms();
+		basket.close();
+	 	orderModal.close();
+	 	contactModal.close();
+	 	orderModal.reset();
+	 	contactModal.reset();
+		basketCounter.textContent = `${appState.basketItems.length}`;
 	});
 });
 
@@ -160,13 +168,5 @@ events.on('order:success', () => {
 });
 
 events.on('success:close', () => {
-	basket.close();
-	orderModal.close();
-	contactModal.close();
 	successModal.close();
-	appState.clearBasket();
-	appState.resetForms();
-	basketCounter.textContent = `${appState.basketItems.length}`;
-	orderModal.reset();
-	contactModal.reset();
 });
