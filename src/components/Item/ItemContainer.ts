@@ -1,8 +1,6 @@
 import { IItemContainer } from '../../types';
 import { Component } from '../base/Component';
 
-
-
 export class ItemContainer extends Component<IItemContainer> {
 	protected _catalog: HTMLElement;
 

@@ -3,7 +3,6 @@ import { createElement, ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/events';
 import { Modal } from '../common/Modal';
 
-
 export class BasketModal extends Modal<IBasketModal> {
 	protected _list: HTMLUListElement;
 	protected _total: HTMLSpanElement;
@@ -32,15 +31,24 @@ export class BasketModal extends Modal<IBasketModal> {
 	set basketItems(items: HTMLElement[]) {
 		if (items.length) {
 			this._list.replaceChildren(...items);
+			this.disabledButton();
 		} else {
 			this._list.replaceChildren(
 				createElement<HTMLParagraphElement>('p', {
 					textContent: 'Корзина пуста',
 				})
 			);
+			this.disabledButton();
 		}
 	}
 
+	disabledButton() {
+		if (this._total.textContent !== '0 синапсов') {
+			this.basketButtonBuy.removeAttribute('disabled');
+		} else {
+			this.basketButtonBuy.setAttribute('disabled', 'true');
+		}
+	}
 	set total(total: number) {
 		this._total.textContent = total.toString() + ' синапсов';
 	}

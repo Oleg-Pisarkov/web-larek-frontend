@@ -40,13 +40,12 @@ export class BasketItem extends Component<IItemBasket> {
 	}
 
 	set title(title: string) {
-		 this._title.textContent = title
+		this._title.textContent = title;
 	}
 
 	set price(price: string) {
 		if (price) {
-			this._price.textContent =
-				price + ' синапсов';
+			this._price.textContent = price + ' синапсов';
 		} else {
 			this._price.textContent = 'Бесценно';
 		}

@@ -1,9 +1,9 @@
-import { IForm, IItem } from '../../types';
+import { IForm, IItem, IAppState } from '../../types';
 import { IContactForm } from '../../types';
 import { IEvents } from '../base/events';
 import { OrderForm } from '../../types';
 
-export class AppState {
+export class AppState implements IAppState {
 	private _basketItems: IItem[] = [];
 	private _catalogItems: IItem[] = [];
 	private _orderForm: OrderForm = { address: '', paymentType: '' };
@@ -46,7 +46,7 @@ export class AppState {
 	getCatalogItemById(id: string): IItem | undefined {
 		return this._catalogItems.find((item) => item.id === id);
 	}
-	
+
 	addBasketItem(item: IItem): void {
 		this._basketItems.push(item);
 		this.events.emit('basketItems:add', { item });

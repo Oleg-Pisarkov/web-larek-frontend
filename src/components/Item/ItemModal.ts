@@ -10,6 +10,7 @@ export interface IItemModal {
 	description: string;
 	category: keyof typeof itemCategory;
 	price: number;
+	selected: boolean;
 }
 
 export class ItemModal extends Modal<IItemModal> {
@@ -34,6 +35,7 @@ export class ItemModal extends Modal<IItemModal> {
 		this.price = this.content.querySelector('.card__price');
 		this.closeButtonElement = this.container.querySelector('.modal__close');
 		this.basketButton = this.content.querySelector('.button');
+
 		this.basketButton.addEventListener('click', () => {
 			this.events.emit('item:add', {
 				id: this._id,
@@ -45,7 +47,9 @@ export class ItemModal extends Modal<IItemModal> {
 			});
 		});
 	}
-
+	disabledButton() {
+		this.basketButton.setAttribute('disabled', 'true');
+	}
 	set modalItem({
 		id,
 		description,
@@ -63,7 +67,6 @@ export class ItemModal extends Modal<IItemModal> {
 	}) {
 		this.content.querySelector('.card__text').textContent = description;
 		this.content.querySelector('.card__title').textContent = title;
-		//this.content.querySelector('.card__category').textContent = category;
 		this.itemCategory = category;
 		this.content
 			.querySelector('.card__image')
@@ -76,17 +79,21 @@ export class ItemModal extends Modal<IItemModal> {
 			this.content.querySelector('.card__price').textContent = 'Бесценно';
 			this.basketButton.setAttribute('disabled', 'true');
 		}
-		this._id = id
+		this._id = id;
 	}
 	set ItemId(id: string) {
 		this._id = id;
-		console.log(this._id);
 	}
 
 	set itemCategory(value: keyof typeof itemCategory) {
-			const categoryItem = itemCategory[value];
-			this.content.querySelector('.card__category').textContent = categoryItem.title;
-			this.content.querySelector('.card__category').setAttribute('class', `card__category card__category_${categoryItem.value}`);
-			//this.category.className = `card__category card__category_${categoryItem.value}`;
+		const categoryItem = itemCategory[value];
+		this.content.querySelector('.card__category').textContent =
+			categoryItem.title;
+		this.content
+			.querySelector('.card__category')
+			.setAttribute(
+				'class',
+				`card__category card__category_${categoryItem.value}`
+			);
 	}
 }

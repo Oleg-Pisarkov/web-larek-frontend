@@ -2,7 +2,6 @@ import { IItem, itemCategory } from '../../types/index';
 import { CDN_URL } from '../../utils/constants';
 import { Component } from '../base/Component';
 
-
 export interface IItemActions {
 	onClick: (event: MouseEvent) => void;
 }
@@ -24,7 +23,6 @@ export class Item extends Component<IItem> {
 		this.title = this.container.querySelector('.card__title');
 		this.category = this.container.querySelector('.card__category');
 		this.price = this.container.querySelector('.card__price');
-
 		this.container.addEventListener('click', (evt) => {
 			actions.onClick(evt);
 		});
@@ -42,7 +40,7 @@ export class Item extends Component<IItem> {
 		const category = itemCategory[value];
 		this.category.textContent = category.title;
 		this.category.className = `card__category card__category_${category.value}`;
-}
+	}
 
 	render(data?: Partial<IItem>): HTMLElement;
 	render(itemData: Partial<IItem>, id: string): HTMLElement;
@@ -60,6 +58,4 @@ export class Item extends Component<IItem> {
 			return super.render(itemData);
 		}
 	}
-
 }
-

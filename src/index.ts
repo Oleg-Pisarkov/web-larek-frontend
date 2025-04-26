@@ -20,25 +20,29 @@ const events = new EventEmitter();
 const baseApi: IApi = new Api(API_URL, settings);
 const api = new AppApi(baseApi);
 const appState = new AppState(events);
-const itemTemplate: HTMLTemplateElement = document.querySelector('#card-catalog');
+const itemTemplate: HTMLTemplateElement =
+	document.querySelector('#card-catalog');
 const itemContainer = new ItemContainer(document.querySelector('.gallery'));
 const viewModal = new ItemModal(document.querySelector('.modal_full'), events);
-const itemPreviewTemplate: HTMLTemplateElement = document.querySelector('#card-preview');
+const itemPreviewTemplate: HTMLTemplateElement =
+	document.querySelector('#card-preview');
 const basket = new BasketModal(document.querySelector('.modal_basket'), events);
-const basketTemplate: HTMLTemplateElement =	document.querySelector('#card-basket');
+const basketTemplate: HTMLTemplateElement =
+	document.querySelector('#card-basket');
 const basketCounter = ensureElement<HTMLSpanElement>('.header__basket-counter');
 const basketButton = ensureElement<HTMLButtonElement>('.header__basket');
 const orderModal = new Order(document.querySelector('.order-modal'), events);
-const contactModal = new Contacts(	document.querySelector('.email-modal'),	events);
-const successModal = new Success(	document.querySelector('.result-modal'),	events
+const contactModal = new Contacts(
+	document.querySelector('.email-modal'),
+	events
+);
+const successModal = new Success(
+	document.querySelector('.result-modal'),
+	events
 );
 
 basketButton.addEventListener('click', () => {
 	events.emit('basket:open');
-});
-
-events.onAll((event) => {
-	console.log(event.eventName, event.data);
 });
 
 Promise.all([api.getItems()])
@@ -53,7 +57,7 @@ events.on('items:loded', () => {
 		const itemInsnant = new Item(cloneTemplate(itemTemplate), {
 			onClick: () => events.emit('item:open', item),
 		});
-    
+
 		return itemInsnant.render(item);
 	});
 	itemContainer.render({ catalog: itemArray });
@@ -69,12 +73,17 @@ events.on('item:open', (item: IItem) => {
 	viewModal.modalItem = modalData;
 	viewModal.open();
 	viewModal.ItemId = item.id;
+
+	if (appState.basketItems.find((i) => i.id === item.id)) {
+		viewModal.disabledButton();
+	}
 });
 
 events.on('item:add', (item: IItem) => {
 	appState.addBasketItem(item);
 	basketCounter.textContent = `${appState.basketItems.length}`;
 	viewModal.close();
+	viewModal.disabledButton();
 });
 
 events.on('basket:open', () => {
@@ -91,6 +100,7 @@ events.on('basket:open', () => {
 	});
 	basket.basketItems = basketItem;
 	basket.total = appState.basketTotal;
+	basket.disabledButton();
 	basket.open();
 });
 
@@ -99,12 +109,12 @@ events.on('basket:remove', (item: IItem) => {
 	basketCounter.textContent = `${appState.basketItems.length}`;
 	basket.changeIndex();
 	basket.total = appState.basketTotal;
+	basket.disabledButton();
 });
 
 events.on('order:open', () => {
 	orderModal.render(appState.validateOrderForm());
 	orderModal.open();
-	console.log(appState.orderForm);
 });
 
 events.on(
